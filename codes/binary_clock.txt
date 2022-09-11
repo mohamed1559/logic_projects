@@ -1,0 +1,58 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_unsigned.all;
+
+entity binary_clock is
+port ( 
+
+--pulses
+clk,clr : in std_logic ;
+--outputs
+hours:   inout std_logic_vector (5 downto 0);
+minutes: inout std_logic_vector (5 downto 0);
+seconds: inout std_logic_vector (5 downto 0);
+--intial inputs
+h: in std_logic_vector (5 downto 0);
+m: in std_logic_vector (5 downto 0);
+s: in std_logic_vector (5 downto 0)
+
+);
+end binary_clock;
+
+architecture Behavioral of binary_clock is
+
+begin
+--hours<=h;
+--minutes<=m;
+--seconds<=s;
+
+process(clk,clr)  
+
+begin
+if (clr='1') then --clr ='1' means i want to set the clock
+hours<=h;
+minutes<=m;
+seconds<=s;
+elsif(clk'event and clk='0') then --rising edge exist
+--algorithm to follow
+-- seconds should increase every edge while does not reach 60
+-- if reached 60 then minutes increase by 1 and seconds =0
+-- minutes should follow sequance till reach 60 then hours increase by 1 and minutes=0
+-- hours follow the sequance till reach 24 then h=0
+seconds <= seconds+ 1;
+if(seconds = "111011") then
+seconds<="000000";
+minutes <= minutes + 1;
+if(minutes = "111011") then
+hours <= hours + 1;
+minutes <= "000000";
+if(hours = "010111") then
+hours <= "000000";
+end if;
+end if;
+end if;
+end if;
+
+
+end process;
+end Behavioral;
